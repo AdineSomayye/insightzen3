@@ -2,7 +2,7 @@
 <html lang="fa">
 <head>
     <meta charset="UTF-8">
-    <title>ثبت‌نام</title>
+    <title>ورود</title>
     <style>
         body {
             font-family: sans-serif;
@@ -25,7 +25,6 @@
             display: block;
             margin-bottom: 5px;
         }
-        input[type="text"],
         input[type="email"],
         input[type="password"] {
             width: 100%;
@@ -36,55 +35,44 @@
         }
         button {
             padding: 10px 20px;
-            background-color: #007bff;
+            background-color: #28a745;
             color: #fff;
             border: none;
             border-radius: 4px;
             cursor: pointer;
         }
         button:hover {
-            background-color: #0056b3;
+            background-color: #1e7e34;
         }
         .messages {
-            color: green;
+            color: red;
             margin-bottom: 15px;
         }
     </style>
 </head>
 <body>
-    <h2>ثبت‌نام</h2>
+    <h2>ورود</h2>
     {% if messages %}
         <div class="messages">
             {% for message in messages %}
-                <p>{{ message }}</p>
+                {{ message }}
             {% endfor %}
         </div>
     {% endif %}
     <form method="post">
         {% csrf_token %}
         {{ form.non_field_errors }}
-        <p>
-            <label for="id_full_name">نام کامل:</label>
-            {{ form.full_name }}
-            {{ form.full_name.errors }}
-        </p>
-        <p>
-            <label for="id_email">ایمیل:</label>
-            {{ form.email }}
-            {{ form.email.errors }}
-        </p>
-        <p>
-            <label for="id_password1">رمز عبور:</label>
-            {{ form.password1 }}
-            {{ form.password1.errors }}
-        </p>
-        <p>
-            <label for="id_password2">تأیید رمز عبور:</label>
-            {{ form.password2 }}
-            {{ form.password2.errors }}
-        </p>
-        <button type="submit">ثبت‌نام</button>
+
+        <label for="{{ form.email.id_for_label }}">ایمیل:</label>
+        {{ form.email }}
+        {{ form.email.errors }}
+
+        <label for="{{ form.password.id_for_label }}">رمز عبور:</label>
+        {{ form.password }}
+        {{ form.password.errors }}
+
+        <button type="submit">ورود</button>
     </form>
-    <p>حساب دارید؟ <a href="{% url 'login' %}">ورود</a></p>
+    <p>حساب ندارید؟ <a href="{% url 'signup' %}">ثبت‌نام</a></p>
 </body>
 </html>

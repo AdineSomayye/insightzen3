@@ -14,6 +14,9 @@ from . import views
 
 
 urlpatterns = [
+    # Redirect the root URL to the login view so that visiting ``/``
+    # shows the login page instead of Django's default placeholder.
+    path('', views.login_view, name='home'),
     path('signup/', views.signup_view, name='signup'),
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
