@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{#
+  Template for the coding page. This form allows the user to enter the API key,
+  project name, question domain and upload an Excel file. After submission
+  results are displayed in tables with an optional bar chart and download link.
+#}
+
+{% block title %}
+    {% if lang == 'fa' %}کدگذاری{% else %}Coding{% endif %}
+{% endblock %}
+
+{% block content %}
+    <h2>{% if lang == 'fa' %}کدگذاری{% else %}Coding{% endif %}</h2>
+
+    {# Display validation or processing errors #}
+    {% if errors %}
+        <div class="messages" style="color:red; margin-bottom:15px;">
+            {% for err in errors %}
+                <p>{{ err }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {# Form for uploading file and entering details #}
+    <form method="post" enctype="multipart/form-data" style="max-width:600px; margin-bottom:30px;">
+        {% csrf_token %}
+        <div style="margin-bottom:10px;">
+            <label for="api_key">{% if lang == 'fa' %}کلید API:{% else %}API Key:{% endif %}</label>
+            <input type="password" id="api_key" name="api_key" value="{{ api_key }}" style="width:100%; padding:8px;" />
+        </div>
+        <div style="margin-bottom:10px;">
+            <label for="project_name">{% if lang == 'fa' %}نام پروژه:{% else %}Project Name:{% endif %}</label>
+            <input type="text" id="project_name" name="project_name" value="{{ project_name }}" style="width:100%; padding:8px;" />
+        </div>
+        <div style="margin-bottom:10px;">
+            <label for="question_domain">{% if lang == 'fa' %}حوزهٔ سؤال:{% else %}Question Domain:{% endif %}</label>
+            <input type="text" id="question_domain" name="question_domain" value="{{ question_domain }}" style="width:100%; padding:8px;" />
+        </div>
+        <div style="margin-bottom:10px;">
+            <label for="uploaded_file">{% if lang == 'fa' %}فایل اکسل:{% else %}Excel File:{% endif %}</label>
+            <input type="file" id="uploaded_file" name="uploaded_file" accept=".xlsx" />
+        </div>
+        <button type="submit">{% if lang == 'fa' %}پردازش{% else %}Process{% endif %}</button>
+    </form>
+
+    {# Display results if available #}
+    {% if df_triple_html %}
+        <h3>{% if lang == 'fa' %}جدول «triple»{% else %}Triple Sheet{% endif %}</h3>
+        <div style="overflow-x:auto;">{{ df_triple_html|safe }}</div>
+        <h3>{% if lang == 'fa' %}جدول «codeframe»{% else %}Codeframe Sheet{% endif %}</h3>
+        <div style="overflow-x:auto;">{{ df_codeframe_html|safe }}</div>
+        <h3>{% if lang == 'fa' %}جدول «binary»{% else %}Binary Sheet{% endif %}</h3>
+        <div style="overflow-x:auto;">{{ df_binary_html|safe }}</div>
+        {% if chart_uri %}
+            <h3>{% if lang == 'fa' %}نمودار ستونی{% else %}Bar Chart{% endif %}</h3>
+            <img src="{{ chart_uri }}" alt="Bar Chart" style="max-width:100%; height:auto;" />
+        {% endif %}
+        <div style="margin-top:20px;">
+            <a href="{{ excel_download_uri }}" download="{{ excel_filename }}">{% if lang == 'fa' %}دانلود فایل اکسل{% else %}Download Excel File{% endif %}</a>
+        </div>
+        {% if fail_qids %}
+            <div style="margin-top:15px; color:darkorange;">
+                <strong>{% if lang == 'fa' %}شناسه‌های سؤالی که پردازش نشدند:{% else %}QIDs that failed to process:{% endif %}</strong>
+                {{ fail_qids|join:', ' }}
+            </div>
+        {% endif %}
+    {% endif %}
+
+{% endblock %}

@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: myproject
+      POSTGRES_USER: myprojectuser
+      POSTGRES_PASSWORD: myprojectpassword
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  web:
+    build: .
+    # Run database migrations before starting the development server.
+    # Using ``sh -c`` allows us to execute multiple commands in sequence.
+    command: >
+      sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      POSTGRES_DB: myproject
+      POSTGRES_USER: myprojectuser
+      POSTGRES_PASSWORD: myprojectpassword
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+
+volumes:
+  db_data:
