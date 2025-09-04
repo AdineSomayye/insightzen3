@@ -14,10 +14,11 @@ services:
 
   web:
     build: .
-    # Run database migrations before starting the development server.
-    # Using ``sh -c`` allows us to execute multiple commands in sequence.
-    command: >
-      sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    # Run database migrations before starting the development server. Without the
+    # multi-line YAML string (>) this command stays on a single line which
+    # ensures it is passed correctly to the shell. The ``sh -c`` wrapper
+    # allows us to chain commands using ``&&``.
+    command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
     volumes:
       - .:/code
     ports:
