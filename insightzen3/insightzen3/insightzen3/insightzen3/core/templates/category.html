@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{#
+  Template for the category page. This form allows the user to enter
+  the API key, project domain and upload an Excel file. After
+  submission the updated codeframe is displayed in a table with a
+  download link. All labels and messages are rendered based on the
+  selected language stored in the session.
+#}
+
+{% block title %}
+    {% if lang == 'fa' %}دسته‌بندی{% else %}Category{% endif %}
+{% endblock %}
+
+{% block content %}
+    <h2>{% if lang == 'fa' %}دسته‌بندی{% else %}Category{% endif %}</h2>
+
+    {# Display validation or processing errors #}
+    {% if errors %}
+        <div class="messages" style="color:red; margin-bottom:15px;">
+            {% for err in errors %}
+                <p>{{ err }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {# Form for uploading file and entering details #}
+    <form method="post" enctype="multipart/form-data" style="max-width:600px; margin-bottom:30px;">
+        {% csrf_token %}
+        <div style="margin-bottom:10px;">
+            <label for="api_key">{% if lang == 'fa' %}کلید API:{% else %}API Key:{% endif %}</label>
+            <input type="password" id="api_key" name="api_key" value="{{ api_key }}" style="width:100%; padding:8px;" />
+        </div>
+        <div style="margin-bottom:10px;">
+            <label for="domain">{% if lang == 'fa' %}حوزهٔ پروژه:{% else %}Project Domain:{% endif %}</label>
+            <input type="text" id="domain" name="domain" value="{{ domain }}" style="width:100%; padding:8px;" />
+        </div>
+        <div style="margin-bottom:10px;">
+            <label for="uploaded_file">{% if lang == 'fa' %}فایل اکسل:{% else %}Excel File:{% endif %}</label>
+            <input type="file" id="uploaded_file" name="uploaded_file" accept=".xlsx" />
+        </div>
+        <button type="submit">{% if lang == 'fa' %}پردازش{% else %}Process{% endif %}</button>
+    </form>
+
+    {# Display updated codeframe and download link if available #}
+    {% if df_codeframe_html %}
+        <h3>{% if lang == 'fa' %}کدفرم به‌روز شده{% else %}Updated Codeframe{% endif %}</h3>
+        <div style="overflow-x:auto;">{{ df_codeframe_html|safe }}</div>
+        <div style="margin-top:20px;">
+            <a href="{{ excel_download_uri }}" download="{{ excel_filename }}">{% if lang == 'fa' %}دانلود فایل اکسل به‌روز شده{% else %}Download Updated Excel File{% endif %}</a>
+        </div>
+    {% endif %}
+
+{% endblock %}
