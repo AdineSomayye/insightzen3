@@ -1,0 +1,82 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="{% if lang == 'fa' %}fa{% else %}en{% endif %}">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% block title %}
+            {% if lang == 'fa' %}برنامه{% else %}Application{% endif %}
+        {% endblock %}
+    </title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+            /* Set text direction based on language */
+            direction: {% if lang == 'fa' %}rtl{% else %}ltr{% endif %};
+        }
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        .sidebar {
+            width: 220px;
+            background-color: #f5f5f5;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .sidebar h3 {
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+        .sidebar a {
+            display: block;
+            color: #333;
+            text-decoration: none;
+            margin-bottom: 10px;
+        }
+        .sidebar a:hover {
+            text-decoration: underline;
+        }
+        .content {
+            flex: 1;
+            padding: 20px;
+        }
+        .lang-switcher {
+            margin-bottom: 20px;
+        }
+        .lang-switcher a {
+            margin-right: 10px;
+            margin-left: 10px;
+            text-decoration: none;
+            color: #007bff;
+        }
+        .lang-switcher a.active {
+            font-weight: bold;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="lang-switcher">
+                {# Language selection links #}
+                <a href="{% url 'set_language' %}?lang=en" class="{% if lang != 'fa' %}active{% endif %}">EN</a> |
+                <a href="{% url 'set_language' %}?lang=fa" class="{% if lang == 'fa' %}active{% endif %}">FA</a>
+            </div>
+            <h3>{% if lang == 'fa' %}منو{% else %}Menu{% endif %}</h3>
+            <a href="{% url 'dashboard' %}">{% if lang == 'fa' %}داشبورد{% else %}Dashboard{% endif %}</a>
+            <a href="{% url 'page1' %}">{% if lang == 'fa' %}صفحه ۱{% else %}Page 1{% endif %}</a>
+            <a href="{% url 'page2' %}">{% if lang == 'fa' %}صفحه ۲{% else %}Page 2{% endif %}</a>
+            <a href="{% url 'page3' %}">{% if lang == 'fa' %}صفحه ۳{% else %}Page 3{% endif %}</a>
+            <a href="{% url 'coding' %}">{% if lang == 'fa' %}کدگذاری{% else %}Coding{% endif %}</a>
+            <a href="{% url 'logout' %}">{% if lang == 'fa' %}خروج{% else %}Logout{% endif %}</a>
+        </div>
+        <div class="content">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+</body>
+</html>
