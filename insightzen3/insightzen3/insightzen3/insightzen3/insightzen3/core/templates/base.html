@@ -1,0 +1,127 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="{% if lang == 'fa' %}fa{% else %}en{% endif %}">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% block title %}
+            {% if lang == 'fa' %}برنامه{% else %}Application{% endif %}
+        {% endblock %}
+    </title>
+    <style>
+        :root {
+            /* Brand palette for accent elements */
+            --primary: #15b8d9;
+            --accent: #ff4955;
+        }
+        /* Base typography and direction */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+            direction: {% if lang == 'fa' %}rtl{% else %}ltr{% endif %};
+            background-color: {% if theme == 'dark' %}#0f172a{% else %}#f9fafb{% endif %};
+            color: {% if theme == 'dark' %}#e2e8f0{% else %}#1e293b{% endif %};
+        }
+        a { text-decoration: none; }
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+            background-color: {% if theme == 'dark' %}#1e293b{% else %}#ffffff{% endif %};
+            border-bottom: 1px solid {% if theme == 'dark' %}#334155{% else %}#e2e8f0{% endif %};
+        }
+        .logo-section {
+            display: flex;
+            align-items: center;
+        }
+        .logo-section img {
+            height: 32px;
+            margin-{{ 'left' if lang == 'fa' else 'right' }}: 8px;
+        }
+        .controls a {
+            margin-{{ 'right' if lang == 'fa' else 'left' }}: 12px;
+            color: var(--primary);
+            font-weight: 600;
+        }
+        .controls a.active {
+            color: var(--accent);
+        }
+        .container {
+            display: flex;
+            min-height: calc(100vh - 60px);
+        }
+        .sidebar {
+            width: 220px;
+            background-color: {% if theme == 'dark' %}#1e2331{% else %}#ffffff{% endif %};
+            padding: 20px;
+            box-sizing: border-box;
+            border-{{ 'left' if lang == 'fa' else 'right' }}: 1px solid {% if theme == 'dark' %}#334155{% else %}#e5e7eb{% endif %};
+        }
+        .sidebar h3 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+        .sidebar a {
+            display: block;
+            margin-bottom: 12px;
+            color: {% if theme == 'dark' %}#cbd5e1{% else %}#374151{% endif %};
+            font-weight: 600;
+        }
+        .sidebar a:hover {
+            color: var(--accent);
+        }
+        .content {
+            flex: 1;
+            padding: 20px;
+        }
+        /* Simple table styling */
+        table.table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+        }
+        table.table th, table.table td {
+            border: 1px solid {% if theme == 'dark' %}#334155{% else %}#e2e8f0{% endif %};
+            padding: 8px;
+            text-align: {% if lang == 'fa' %}right{% else %}left{% endif %};
+        }
+        table.table thead {
+            background-color: {% if theme == 'dark' %}#2d3652{% else %}#f1f5f9{% endif %};
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo-section">
+            <img src="{% static 'logos/Insightzen_s.png' %}" alt="Logo small" />
+            <img src="{% static 'logos/Insightzen_dark.png' if theme == 'dark' else 'logos/Insightzen_light.png' %}" alt="Logo" />
+        </div>
+        <div class="controls">
+            <!-- Theme toggle icons -->
+            <a href="{% url 'set_theme' %}?theme=light" class="{% if theme == 'light' %}active{% endif %}">☀️</a>
+            <a href="{% url 'set_theme' %}?theme=dark" class="{% if theme == 'dark' %}active{% endif %}">🌙</a>
+            <!-- Language toggles -->
+            <a href="{% url 'set_language' %}?lang=en" class="{% if lang != 'fa' %}active{% endif %}">EN</a>
+            <a href="{% url 'set_language' %}?lang=fa" class="{% if lang == 'fa' %}active{% endif %}">FA</a>
+        </div>
+    </header>
+    <div class="container">
+        <nav class="sidebar">
+            <h3>{% if lang == 'fa' %}منو{% else %}Menu{% endif %}</h3>
+            <a href="{% url 'dashboard' %}">{% if lang == 'fa' %}داشبورد{% else %}Dashboard{% endif %}</a>
+            <a href="{% url 'page1' %}">{% if lang == 'fa' %}صفحه ۱{% else %}Page 1{% endif %}</a>
+            <a href="{% url 'page2' %}">{% if lang == 'fa' %}صفحه ۲{% else %}Page 2{% endif %}</a>
+            <a href="{% url 'page3' %}">{% if lang == 'fa' %}صفحه ۳{% else %}Page 3{% endif %}</a>
+            <a href="{% url 'coding' %}">{% if lang == 'fa' %}کدگذاری{% else %}Coding{% endif %}</a>
+            <a href="{% url 'category' %}">{% if lang == 'fa' %}دسته‌بندی{% else %}Category{% endif %}</a>
+            <a href="{% url 'logout' %}">{% if lang == 'fa' %}خروج{% else %}Logout{% endif %}</a>
+        </nav>
+        <main class="content">
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="{% if lang == 'fa' %}fa{% else %}en{% endif %}">
+<head>
+    <meta charset="UTF-8">
+    <title>{% if lang == 'fa' %}ورود{% else %}Login{% endif %}</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            direction: {% if lang == 'fa' %}rtl{% else %}ltr{% endif %};
+            padding: 40px;
+            background-color: #fafafa;
+        }
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #1e7e34;
+        }
+        .messages {
+            color: red;
+            margin-bottom: 15px;
+        }
+        .lang-switcher {
+            margin-bottom: 20px;
+        }
+        .lang-switcher a {
+            margin-left: 10px;
+            margin-right: 10px;
+            text-decoration: none;
+            color: #007bff;
+        }
+        .lang-switcher a.active {
+            font-weight: bold;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="lang-switcher">
+        <a href="{% url 'set_language' %}?lang=en" class="{% if lang != 'fa' %}active{% endif %}">EN</a> |
+        <a href="{% url 'set_language' %}?lang=fa" class="{% if lang == 'fa' %}active{% endif %}">FA</a>
+        <!-- Theme toggle on auth pages -->
+        <span style="margin-left:20px;"></span>
+        <a href="{% url 'set_theme' %}?theme=light" class="{% if theme == 'light' %}active{% endif %}">☀️</a>
+        <a href="{% url 'set_theme' %}?theme=dark" class="{% if theme == 'dark' %}active{% endif %}">🌙</a>
+    </div>
+    <h2>{% if lang == 'fa' %}ورود{% else %}Login{% endif %}</h2>
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+        </div>
+    {% endif %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+
+        <label for="{{ form.email.id_for_label }}">{% if lang == 'fa' %}ایمیل:{% else %}Email:{% endif %}</label>
+        {{ form.email }}
+        {{ form.email.errors }}
+
+        <label for="{{ form.password.id_for_label }}">{% if lang == 'fa' %}رمز عبور:{% else %}Password:{% endif %}</label>
+        {{ form.password }}
+        {{ form.password.errors }}
+
+        <button type="submit">{% if lang == 'fa' %}ورود{% else %}Login{% endif %}</button>
+    </form>
+    <p>{% if lang == 'fa' %}حساب ندارید؟{% else %}Don't have an account?{% endif %}
+        <a href="{% url 'signup' %}">{% if lang == 'fa' %}ثبت‌نام{% else %}Sign Up{% endif %}</a></p>
+</body>
+</html>

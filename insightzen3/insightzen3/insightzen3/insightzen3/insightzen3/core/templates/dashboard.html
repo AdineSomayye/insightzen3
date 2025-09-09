@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if lang == 'fa' %}داشبورد{% else %}Dashboard{% endif %}{% endblock %}
+
+{% block content %}
+    <h2 style="margin-top:0; margin-bottom:20px;">
+        {% if lang == 'fa' %}داشبورد{% else %}Dashboard{% endif %}
+    </h2>
+    <div class="chart-grid" style="display:flex; flex-wrap:wrap; gap:20px;">
+        <!-- Row 1 -->
+        <div style="flex:1 1 45%; background-color:{% if theme == 'dark' %}#1e2331{% else %}#ffffff{% endif %}; padding:15px; border-radius:8px; box-shadow:0 2px 4px rgba(0,0,0,0.1);">
+            <img src="data:image/png;base64,{{ chart1 }}" alt="Chart 1" style="width:100%; height:auto; display:block; border-radius:6px;" />
+        </div>
+        <div style="flex:1 1 45%; background-color:{% if theme == 'dark' %}#1e2331{% else %}#ffffff{% endif %}; padding:15px; border-radius:8px; box-shadow:0 2px 4px rgba(0,0,0,0.1);">
+            <img src="data:image/png;base64,{{ chart2 }}" alt="Chart 2" style="width:100%; height:auto; display:block; border-radius:6px;" />
+        </div>
+        <!-- Row 2 -->
+        <div style="flex:1 1 45%; background-color:{% if theme == 'dark' %}#1e2331{% else %}#ffffff{% endif %}; padding:15px; border-radius:8px; box-shadow:0 2px 4px rgba(0,0,0,0.1);">
+            <img src="data:image/png;base64,{{ chart3 }}" alt="Chart 3" style="width:100%; height:auto; display:block; border-radius:6px;" />
+        </div>
+        <div style="flex:1 1 45%; background-color:{% if theme == 'dark' %}#1e2331{% else %}#ffffff{% endif %}; padding:15px; border-radius:8px; box-shadow:0 2px 4px rgba(0,0,0,0.1);">
+            <img src="data:image/png;base64,{{ chart4 }}" alt="Chart 4" style="width:100%; height:auto; display:block; border-radius:6px;" />
+        </div>
+    </div>
+{% endblock %}

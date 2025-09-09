@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{#
+  Template for the category page. This form allows the user to enter
+  the API key, project domain and upload an Excel file. After
+  submission the updated codeframe is displayed in a table with a
+  download link. All labels and messages are rendered based on the
+  selected language stored in the session.
+#}
+
+{% block title %}
+    {% if lang == 'fa' %}دسته‌بندی{% else %}Category{% endif %}
+{% endblock %}
+
+{% block content %}
+    <h2 style="margin-top:0; margin-bottom:20px;">{% if lang == 'fa' %}دسته‌بندی{% else %}Category{% endif %}</h2>
+
+    {# Display validation or processing errors #}
+    {% if errors %}
+        <div class="messages" style="color:{% if theme == 'dark' %}#f87171{% else %}#b91c1c{% endif %}; margin-bottom:15px;">
+            {% for err in errors %}
+                <p>{{ err }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {# Form for uploading file and entering details #}
+    <div style="max-width:700px; background-color:{% if theme == 'dark' %}#1e2331{% else %}#ffffff{% endif %}; padding:20px; border-radius:8px; box-shadow:0 2px 4px rgba(0,0,0,0.1); margin-bottom:30px;">
+        <form method="post" enctype="multipart/form-data" style="width:100%;">
+            {% csrf_token %}
+            <div style="margin-bottom:12px;">
+                <label for="api_key" style="display:block; margin-bottom:4px;">{% if lang == 'fa' %}کلید API:{% else %}API Key:{% endif %}</label>
+                <input type="password" id="api_key" name="api_key" value="{{ api_key }}" style="width:100%; padding:8px; border:1px solid {% if theme == 'dark' %}#334155{% else %}#cbd5e1{% endif %}; border-radius:4px; background-color:{% if theme == 'dark' %}#0f172a{% else %}#ffffff{% endif %}; color:{% if theme == 'dark' %}#e2e8f0{% else %}#1e293b{% endif %};" />
+            </div>
+            <div style="margin-bottom:12px;">
+                <label for="domain" style="display:block; margin-bottom:4px;">{% if lang == 'fa' %}حوزهٔ پروژه:{% else %}Project Domain:{% endif %}</label>
+                <input type="text" id="domain" name="domain" value="{{ domain }}" style="width:100%; padding:8px; border:1px solid {% if theme == 'dark' %}#334155{% else %}#cbd5e1{% endif %}; border-radius:4px; background-color:{% if theme == 'dark' %}#0f172a{% else %}#ffffff{% endif %}; color:{% if theme == 'dark' %}#e2e8f0{% else %}#1e293b{% endif %};" />
+            </div>
+            <div style="margin-bottom:12px;">
+                <label for="uploaded_file" style="display:block; margin-bottom:4px;">{% if lang == 'fa' %}فایل اکسل:{% else %}Excel File:{% endif %}</label>
+                <input type="file" id="uploaded_file" name="uploaded_file" accept=".xlsx" style="color:{% if theme == 'dark' %}#e2e8f0{% else %}#1e293b{% endif %};" />
+            </div>
+            <button type="submit" style="padding:10px 20px; border:none; border-radius:4px; background-color:var(--primary); color:#fff; cursor:pointer; font-weight:bold;">
+                {% if lang == 'fa' %}پردازش{% else %}Process{% endif %}
+            </button>
+        </form>
+    </div>
+
+    {# Display updated codeframe and download link if available #}
+    {% if df_codeframe_html %}
+        <div style="margin-top:30px;">
+            <h3 style="margin-bottom:10px;">{% if lang == 'fa' %}کدفرم به‌روز شده{% else %}Updated Codeframe{% endif %}</h3>
+            <div style="overflow-x:auto;">{{ df_codeframe_html|safe }}</div>
+            <div style="margin-top:20px;">
+                <a href="{{ excel_download_uri }}" download="{{ excel_filename }}" style="color:var(--primary); font-weight:bold;">{% if lang == 'fa' %}دانلود فایل اکسل به‌روز شده{% else %}Download Updated Excel File{% endif %}</a>
+            </div>
+        </div>
+    {% endif %}
+
+{% endblock %}
